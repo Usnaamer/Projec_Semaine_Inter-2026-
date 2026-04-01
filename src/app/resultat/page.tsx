@@ -38,7 +38,7 @@ export default function ResultatPage() {
           className={`bg-[#FFC1C1] relative transition-all duration-500 ease-in-out
             ${isZoomed 
               ? 'w-full h-full rounded-none z-50' 
-              : 'w-full max-w-[340px] aspect-[3/4.5] rounded-[40px] border-2 border-white shadow-md' 
+              : 'w-full max-w-[340px] aspect-[3/4.5] rounded-[20px] border-2 border-white shadow-md' 
             }`}
         >
           <button 
@@ -50,67 +50,74 @@ export default function ResultatPage() {
         </div>
       </div>
 
-      {/* 3. LE DÔME BLANC ET LES BOUTONS XXL (Avec ombres fortes) */}
-      {!isZoomed && (
-        <div className="relative w-full h-[220px] shrink-0 flex flex-col items-center z-20">
-          
-          <div 
-            style={{ 
-              width: '494px', height: '363px', backgroundColor: 'white',
-              borderRadius: '50%', position: 'absolute', top: 0, left: '50%',
-              transform: 'translateX(-50%)', zIndex: 10
-            }}
-            className="shadow-[0_-15px_40px_rgba(0,0,0,0.04)]"
-          />
+      {/* 3. LE DÔME BLANC ET LES BOUTONS XXL */}
+{!isZoomed && (
+  <div className="relative w-full h-[240px] shrink-0 flex flex-col items-center z-20">
+    
+    {/* L'Ellipse de fond (On l'agrandit légèrement pour couvrir les boutons) */}
+    <div 
+      style={{ 
+        width: '520px', 
+        height: '380px', 
+        backgroundColor: 'white',
+        borderRadius: '50%',
+        position: 'absolute',
+        top: 0,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 10
+      }}
+      className="shadow-[0_-15px_40px_rgba(0,0,0,0.04)]"
+    />
 
-          <div className="relative z-30 flex flex-col items-center pt-8 pb-10 w-full max-w-[300px]">
-            
-            {/* BOUTON OREILLE (90x90 + Ombre forte) */}
-            <button 
-              style={{ 
-                width: '90px', 
-                height: '90px', 
-                backgroundColor: '#FFF9EE', 
-                boxShadow: strongShadow 
-              }} 
-              className="rounded-full flex items-center justify-center mb-8 active:scale-95 border-none cursor-pointer"
-            >
-              <img src="/oreille.svg" alt="Écouter" style={{ width: '48px' }} />
-            </button>
+    {/* LES BOUTONS (Position remontée) */}
+    <div className="relative z-30 flex flex-col items-center pt-6 w-full max-w-[300px]">
+      
+      {/* BOUTON OREILLE */}
+      <button 
+        style={{ 
+          width: '90px', 
+          height: '90px', 
+          backgroundColor: '#FFF9EE', 
+          boxShadow: strongShadow 
+        }} 
+        className="rounded-full flex items-center justify-center mb-6 active:scale-95 border-none cursor-pointer"
+      >
+        <img src="/oreille.svg" alt="Écouter" style={{ width: '48px' }} />
+      </button>
 
-            <div className="flex justify-between w-full px-2">
-              
-              {/* BOUTON AIDE (74x74 + Ombre forte) */}
-              <button 
-                 style={{ 
-                   backgroundColor: '#FFF9EE', 
-                   width: '74px', 
-                   height: '74px', 
-                   boxShadow: strongShadow 
-                 }}
-                 className="rounded-full flex items-center justify-center active:scale-90 border-none cursor-pointer"
-              >
-                <img src="/aide.svg" alt="Aide" style={{ width: '34px' }} />
-              </button>
+      {/* BOUTONS AIDE ET HISTORIQUE (Remontés ici) */}
+      <div className="flex justify-between w-full px-2">
+        <button 
+           onClick={() => router.push('/aide')}
+           style={{ 
+             backgroundColor: '#FFF9EE', 
+             width: '74px', 
+             height: '74px', 
+             boxShadow: strongShadow 
+           }}
+           className="rounded-full flex items-center justify-center active:scale-90 border-none cursor-pointer"
+        >
+          <img src="/aide.svg" alt="Aide" style={{ width: '34px' }} />
+        </button>
 
-              {/* BOUTON HISTORIQUE (74x74 + Ombre forte) */}
-              <button 
-                 onClick={() => router.push('/historique')}
-                 style={{ 
-                   backgroundColor: '#FFF9EE', 
-                   width: '74px', 
-                   height: '74px', 
-                   boxShadow: strongShadow 
-                 }}
-                 className="rounded-full flex items-center justify-center active:scale-90 border-none cursor-pointer"
-              >
-                <img src="/historique.svg" alt="Historique" style={{ width: '34px' }} />
-              </button>
+        <button 
+           onClick={() => router.push('/historique')}
+           style={{ 
+             backgroundColor: '#FFF9EE', 
+             width: '74px', 
+             height: '74px', 
+             boxShadow: strongShadow 
+           }}
+           className="rounded-full flex items-center justify-center active:scale-90 border-none cursor-pointer"
+        >
+          <img src="/historique.svg" alt="Historique" style={{ width: '34px' }} />
+        </button>
+      </div>
 
-            </div>
-          </div>
-        </div>
-      )}
+    </div>
+  </div>
+)}
     </main>
   );
 }

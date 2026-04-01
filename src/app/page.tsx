@@ -69,6 +69,7 @@ export default function Home() {
         <div className="relative z-30 flex flex-col items-center pt-6 pb-12 w-full max-w-[300px]">
           
           <button 
+          onClick={() => router.push('/guide')}
             style={{ 
               width: '90px', 
               height: '90px', 
@@ -82,6 +83,7 @@ export default function Home() {
 
           <div className="flex justify-between w-full px-2">
             <button 
+            onClick={() => router.push('/aide')}
                style={{ 
                  backgroundColor: '#FFF9EE', 
                  width: '74px', 

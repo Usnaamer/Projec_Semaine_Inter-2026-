@@ -60,6 +60,7 @@ export default function HistoriquePage() {
         />
         <div className="relative z-30 pt-24 pointer-events-auto"> 
           <button 
+          onClick={() => router.push('/aide')}
              style={{ backgroundColor: '#FFF9EE', width: '90px', height: '90px', boxShadow: strongShadow }}
              className="rounded-full flex items-center justify-center active:scale-90 border-none"
           >
