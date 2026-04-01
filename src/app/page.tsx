@@ -1,65 +1,65 @@
-import Image from "next/image";
-
+"use client"; // 1. On ajoute ça tout en haut pour permettre le clic
+import { useRouter } from 'next/navigation'; // 2. On importe le "GPS"
 export default function Home() {
+  const router = useRouter(); // 3. On initialise le GPS
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    /* Conteneur principal : Fond crème, toute la hauteur, sans texte */
+    <main className="flex flex-col items-center justify-between min-h-screen py-12 px-6 overflow-hidden">
+      
+      {/* 1. LE LOGO (80x69px) - En haut */}
+      <div className="mt-4">
+        <img 
+          src="/logo.svg" 
+          alt="Logo" 
+          style={{ width: '80px', height: '69px', objectFit: 'contain' }} 
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </div>
+
+      {/* 2. LE BOUTON CENTRAL (222x222px) - Au milieu */}
+      <div className="flex flex-col items-center justify-center">
+        <button 
+          onClick={() => router.push('/camera')} // 4. Action : va vers le dossier /camera
+          style={{ 
+            width: '222px', 
+            height: '222px', 
+            backgroundColor: '#1F6680',
+            borderRadius: '50%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            border: 'none',
+            boxShadow: '0 12px 35px rgba(31, 102, 128, 0.3)',
+            cursor: 'pointer'
+          }}
+        >
+          <img 
+            src="/camera.svg" 
+            alt="Action" 
+            style={{ width: '100px', height: 'auto' }} 
+          />
+        </button>
+      </div>
+
+      {/* 3. LA NAVIGATION (Boutons de 75px) - En bas */}
+      <nav className="w-full flex justify-around items-end max-w-sm pb-4">
+        
+        {/* Bouton Aide */}
+        <button className="btn-rond-blanc">
+          <img src="/aide.svg" alt="" style={{ width: '38px' }} />
+        </button>
+
+        {/* Bouton Livre (un peu surélevé) */}
+        <button className="btn-rond-blanc mb-10">
+          <img src="/livre.svg" alt="" style={{ width: '38px' }} />
+        </button>
+
+        {/* Bouton Histoire */}
+        <button className="btn-rond-blanc">
+          <img src="/historique.svg" alt="" style={{ width: '38px' }} />
+        </button>
+
+      </nav>
+
+    </main>
   );
 }
