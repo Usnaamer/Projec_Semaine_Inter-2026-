@@ -1,26 +1,13 @@
 @import "tailwindcss";
 
-/* On applique tes couleurs Figma directement sur la page */
+/* Configuration de base de l'application */
 body {
-  background-color: #FFF9EE; /* Ton crème */
-  color: #1F6680;           /* Ton bleu */
+  background-color: #FFF9EE; /* Ton fond crème */
+  color: #1F6680;           /* Ton bleu LisIA */
   margin: 0;
   padding: 0;
   font-family: sans-serif;
   min-height: 100vh;
-}
-
-.btn-rond-blanc {
-  width: 75px;
-  height: 75px;
-  background-color: #FFFFFF;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  cursor: pointer;
-  
-  /* Ton ombre Figma : X=0 Y=0 Blur=4 Spread=1 Color=#707070 à 25% */
-  box-shadow: 0px 0px 4px 1px rgba(112, 112, 112, 0.25);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
