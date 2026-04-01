@@ -94,6 +94,7 @@ export default function Home() {
             </button>
             
             <button 
+            onClick={() => router.push('/historique')}
                style={{ 
                  backgroundColor: '#FFF9EE', 
                  width: '74px', 
