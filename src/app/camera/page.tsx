@@ -17,8 +17,17 @@ export default function CameraPage() {
 
   // Lancement de la caméra
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-      .then(stream => { if (videoRef.current) videoRef.current.srcObject = stream; })
+    // Vérifie que l'API est disponible (HTTPS + navigateur)
+    if (!navigator?.mediaDevices?.getUserMedia) {
+      console.error("getUserMedia non supporté (HTTP ou navigateur incompatible)");
+      return;
+    }
+
+    navigator.mediaDevices
+      .getUserMedia({ video: { facingMode: "environment" } })
+      .then(stream => {
+        if (videoRef.current) videoRef.current.srcObject = stream;
+      })
       .catch(err => console.error(err));
   }, []);
 
