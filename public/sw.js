@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lisia-v1';
+const CACHE_NAME = 'Dicte mon image-v1';
 const urlsToCache = ['/', '/manifest.json'];
 
 self.addEventListener('install', (event) => {

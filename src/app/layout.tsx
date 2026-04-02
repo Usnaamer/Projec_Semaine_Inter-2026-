@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next"; // Ajout de Viewport
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ServiceWorker from "@/components/ServiceWorker";
@@ -13,9 +13,21 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// 1. On configure le manifest ici
 export const metadata: Metadata = {
   title: "LisIA",
   description: "Aide à la lecture et compréhension par IA",
+  manifest: "/manifest.json", 
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Dicte mon image",
+  },
+};
+
+// 2. On configure la couleur du thème ici (nouveau standard Next.js)
+export const viewport: Viewport = {
+  themeColor: "#4F46E5",
 };
 
 export default function RootLayout({
@@ -28,10 +40,7 @@ export default function RootLayout({
       lang="fr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#4F46E5" />
-      </head>
+      {/* On a enlevé le <head> manuel car 'metadata' et 'viewport' s'en occupent */}
       <body className="min-h-full flex flex-col">
         <ServiceWorker />
         {children}
