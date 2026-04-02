@@ -29,11 +29,11 @@ export default function CameraPage() {
   useEffect(() => {
     if (!loading) return;
     const messages = [
-      "Analyse en cours...",
-      "Lecture de l'affiche...",
-      "Création des pictogrammes...",
-      "Génération de l'image...",
-      "Presque prêt... ✨",
+      "🔍👀...",
+      "📄👁️...",
+      "🧩🎨...",
+      "🖼️⚙️...",
+      "⏳...✨",
     ];
     let i = 0;
     const interval = setInterval(() => {
