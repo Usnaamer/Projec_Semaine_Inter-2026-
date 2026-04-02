@@ -9,6 +9,8 @@ export default function ResultatPage() {
   const [description, setDescription] = useState<string>("");
   const [speaking, setSpeaking] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isSaved, setIsSaved] = useState(false); // État pour l'icône de sauvegarde
+  
   const strongShadow = "0px 4px 25px rgba(0, 0, 0, 0.18)";
 
   useEffect(() => {
@@ -37,12 +39,22 @@ export default function ResultatPage() {
   const sauvegarderEtQuitter = () => {
     if (!image) return;
     const history = JSON.parse(localStorage.getItem('lisIA_history') || '[]');
-    const alreadySaved = history[0]?.image === image;
+    
+    // Vérifier si l'image est déjà dans l'historique
+    const alreadySaved = history.some((item: any) => item.image === image);
+    
     if (!alreadySaved) {
       history.unshift({ image, description, date: new Date().toISOString() });
       localStorage.setItem('lisIA_history', JSON.stringify(history.slice(0, 20)));
     }
-    router.push('/historique');
+
+    // Effet visuel de confirmation
+    setIsSaved(true);
+
+    // Redirection après un court délai pour laisser voir l'icône de validation
+    setTimeout(() => {
+      router.push('/historique');
+    }, 2000);
   };
 
   const telecharger = () => {
@@ -118,11 +130,44 @@ export default function ResultatPage() {
             )}
 
             <div className="flex gap-4">
-              <button onClick={() => router.push('/camera')} style={{ width: '70px', height: '70px', backgroundColor: 'white', border: '2px solid #1F6680', boxShadow: strongShadow }} className="rounded-full flex items-center justify-center active:scale-90"><img src="/recommencer.svg" className="w-8" /></button>
-              <button onClick={telecharger} style={{ width: '70px', height: '70px', backgroundColor: '#FFF9EE', border: '2px solid #1F6680', boxShadow: strongShadow }} className="rounded-full flex items-center justify-center active:scale-90">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M12 16l-4-4M12 16l4-4M3 19h18" stroke="#1F6680" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              {/* RECOMMENCER */}
+              <button 
+                onClick={() => router.push('/camera')} 
+                style={{ width: '70px', height: '70px', backgroundColor: '#FFF9EE', border: '2px solid #1F6680', boxShadow: strongShadow }} 
+                className="rounded-full flex items-center justify-center active:scale-90"
+              >
+                <img src="/recommencer.svg" className="w-8" alt="Recommencer" />
               </button>
-              <button onClick={sauvegarderEtQuitter} style={{ width: '70px', height: '70px', backgroundColor: '#FFF9EE', border: '2px solid #1F6680', boxShadow: strongShadow }} className="rounded-full flex items-center justify-center active:scale-90"><img src="/historique.svg" className="w-8" /></button>
+
+              {/* TÉLÉCHARGER */}
+              <button 
+                onClick={telecharger} 
+                style={{ width: '70px', height: '70px', backgroundColor: '#FFF9EE', border: '2px solid #1F6680', boxShadow: strongShadow }} 
+                className="rounded-full flex items-center justify-center active:scale-90"
+              >
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3v13M12 16l-4-4M12 16l4-4M3 19h18" stroke="#1F6680" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+
+              {/* SAUVEGARDER (Dynamique) */}
+              <button 
+                onClick={sauvegarderEtQuitter} 
+                style={{ 
+                  width: '70px', 
+                  height: '70px', 
+                  backgroundColor: isSaved ? '#E2F0D9' : '#FFF9EE', // Change en vert pâle si sauvé
+                  border: '2px solid #1F6680', 
+                  boxShadow: strongShadow 
+                }} 
+                className="rounded-full flex items-center justify-center active:scale-90 transition-all duration-300"
+              >
+                <img 
+                  src={isSaved ? "/sauvegarde-ok.svg" : "/sauvegarder-plus.svg"} 
+                  className="w-9 h-9" 
+                  alt="Sauvegarder"
+                />
+              </button>
             </div>
           </>
         ) : (

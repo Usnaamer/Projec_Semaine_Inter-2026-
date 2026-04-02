@@ -105,7 +105,7 @@ export default function Home() {
                }}
                className="rounded-full flex items-center justify-center active:scale-90 border-none cursor-pointer"
             >
-              <img src="/historique.svg" alt="Historique" style={{ width: '34px' }} />
+              <img src="/favoris.svg" alt="Favoris" style={{ width: '34px' }} />
             </button>
           </div>
         </div>
