@@ -14,7 +14,7 @@ export default function GuidePage() {
   const etapes = [
     { 
       id: 1, 
-      texte: "Bienvenue sur LisIA. Pour commencer, appuie sur le bouton appareil photo en bas de l'écran d'accueil pour prendre en photo un texte ou des instructions." 
+      texte: "Bienvenue sur Dict mon image. Pour commencer, appuie sur le bouton appareil photo au centre de l'écran d'accueil pour prendre en photo un texte ou des instructions." 
     },
     { 
       id: 2, 
@@ -22,7 +22,7 @@ export default function GuidePage() {
     },
     { 
       id: 3, 
-      texte: "Tu peux enregistrer tes scans pour les retrouver plus tard. Pour cela, utilise le bouton historique. Tes anciennes lectures y sont rangées par date." 
+      texte: "Tu peux enregistrer tes scans pour les retrouver plus tard. Pour cela, utilise le bouton vignet. Tes anciennes lectures y sont rangées par date." 
     }
   ];
 
