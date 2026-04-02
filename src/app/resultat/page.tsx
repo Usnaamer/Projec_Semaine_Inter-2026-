@@ -1,123 +1,178 @@
 "use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ResultatPage() {
   const router = useRouter();
-  const [isZoomed, setIsZoomed] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
+  const [description, setDescription] = useState<string>("");
+  const [speaking, setSpeaking] = useState(false);
+  const strongShadow = "0px 4px 25px rgba(0, 0, 0, 0.18)";
 
-  // Ombre forte pour le contraste (identique à l'accueil et historique)
-  const strongShadow = "0px 4px 25px rgba(0, 0, 0, 0.18)"; 
+  useEffect(() => {
+    const img = sessionStorage.getItem("generatedImage");
+    const desc = sessionStorage.getItem("description");
+    if (img) setImage(img);
+    if (desc) setDescription(desc);
+  }, []);
+
+  const lireInstructions = () => {
+    if (!description) return;
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(description);
+    utterance.lang = 'fr-FR';
+    utterance.rate = 0.85;
+    utterance.onstart = () => setSpeaking(true);
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const sauvegarderEtQuitter = () => {
+    if (!image) return;
+    const history = JSON.parse(localStorage.getItem('lisIA_history') || '[]');
+    // Évite les doublons
+    const alreadySaved = history[0]?.image === image;
+    if (!alreadySaved) {
+      history.unshift({ image, description, date: new Date().toISOString() });
+      localStorage.setItem('lisIA_history', JSON.stringify(history.slice(0, 20)));
+    }
+    router.push('/historique');
+  };
+
+  const telecharger = () => {
+    if (!image) return;
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = "lisIA-pictogrammes.jpg";
+    a.click();
+  };
 
   return (
     <main className="flex flex-col h-screen bg-[#FFF9EE] overflow-hidden relative text-[#1F6680]">
-      
-      {/* 1. HEADER (Bouton Retour : Transparent + Contour Bleu) */}
-      {!isZoomed && (
-        <div className="absolute top-12 left-6 z-20">
-          <button 
-            onClick={() => router.push('/camera')}
-            style={{ 
-              width: '52px', 
-              height: '52px', 
-              backgroundColor: 'transparent', 
-              border: '2px solid #1F6680', 
-              borderRadius: '50%',
-            }}
-            className="flex items-center justify-center active:scale-90 transition-transform cursor-pointer"
-          >
-            <img src="/fleche.svg" alt="Retour" style={{ width: '24px' }} />
-          </button>
-        </div>
-      )}
 
-      {/* 2. ZONE D'IMAGE */}
-      <div className={`flex-1 flex items-center justify-center transition-all duration-500 z-10 ${isZoomed ? 'p-0' : 'px-8 pt-20 pb-4'}`}>
-        <div 
-          className={`bg-[#FFC1C1] relative transition-all duration-500 ease-in-out
-            ${isZoomed 
-              ? 'w-full h-full rounded-none z-50' 
-              : 'w-full max-w-[340px] aspect-[3/4.5] rounded-[20px] border-2 border-white shadow-md' 
-            }`}
+      {/* HEADER */}
+      <div className="pt-10 pb-4 px-8 z-30 relative">
+        <button
+          onClick={() => router.push('/')}
+          style={{
+            width: '56px', height: '56px',
+            backgroundColor: 'transparent',
+            border: '2px solid #1F6680',
+            borderRadius: '50%',
+          }}
+          className="flex items-center justify-center active:scale-90 transition-transform cursor-pointer"
         >
-          <button 
-            onClick={() => setIsZoomed(!isZoomed)}
-            className="absolute bottom-5 right-5 w-12 h-12 flex items-center justify-center bg-white/90 backdrop-blur rounded-xl shadow-sm z-[60] active:scale-90"
-          >
-            <img src={isZoomed ? "/reduire.svg" : "/agrandir.svg"} alt="Zoom" className="w-7 h-7" />
-          </button>
-        </div>
-      </div>
-
-      {/* 3. LE DÔME BLANC ET LES BOUTONS XXL */}
-{!isZoomed && (
-  <div className="relative w-full h-[240px] shrink-0 flex flex-col items-center z-20">
-    
-    {/* L'Ellipse de fond (On l'agrandit légèrement pour couvrir les boutons) */}
-    <div 
-      style={{ 
-        width: '520px', 
-        height: '380px', 
-        backgroundColor: 'white',
-        borderRadius: '50%',
-        position: 'absolute',
-        top: 0,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 10
-      }}
-      className="shadow-[0_-15px_40px_rgba(0,0,0,0.04)]"
-    />
-
-    {/* LES BOUTONS (Position remontée) */}
-    <div className="relative z-30 flex flex-col items-center pt-6 w-full max-w-[300px]">
-      
-      {/* BOUTON OREILLE */}
-      <button 
-        style={{ 
-          width: '90px', 
-          height: '90px', 
-          backgroundColor: '#FFF9EE', 
-          boxShadow: strongShadow 
-        }} 
-        className="rounded-full flex items-center justify-center mb-6 active:scale-95 border-none cursor-pointer"
-      >
-        <img src="/oreille.svg" alt="Écouter" style={{ width: '48px' }} />
-      </button>
-
-      {/* BOUTONS AIDE ET HISTORIQUE (Remontés ici) */}
-      <div className="flex justify-between w-full px-2">
-        <button 
-           onClick={() => router.push('/aide')}
-           style={{ 
-             backgroundColor: '#FFF9EE', 
-             width: '74px', 
-             height: '74px', 
-             boxShadow: strongShadow 
-           }}
-           className="rounded-full flex items-center justify-center active:scale-90 border-none cursor-pointer"
-        >
-          <img src="/aide.svg" alt="Aide" style={{ width: '34px' }} />
-        </button>
-
-        <button 
-           onClick={() => router.push('/historique')}
-           style={{ 
-             backgroundColor: '#FFF9EE', 
-             width: '74px', 
-             height: '74px', 
-             boxShadow: strongShadow 
-           }}
-           className="rounded-full flex items-center justify-center active:scale-90 border-none cursor-pointer"
-        >
-          <img src="/historique.svg" alt="Historique" style={{ width: '34px' }} />
+          <img src="/maison.svg" alt="Accueil" className="w-7" />
         </button>
       </div>
 
-    </div>
-  </div>
-)}
+      {/* ZONE CENTRALE */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 gap-6 pb-8">
+
+        {image ? (
+          <>
+            {/* Card image + bouton écouter — même style que historique */}
+            <div
+              className="bg-white rounded-[40px] p-6 flex items-center w-full shadow-sm border border-black/5"
+              style={{ minHeight: '190px', boxShadow: strongShadow }}
+            >
+              {/* Miniature image */}
+              <div className="w-44 h-32 rounded-[25px] shrink-0 overflow-hidden bg-gray-100">
+                <img
+                  src={image}
+                  alt="Pictogrammes générés"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="flex-1" />
+
+              {/* Bouton écouter style oreille */}
+              <button
+                onClick={lireInstructions}
+                style={{
+                  width: '80px', height: '80px',
+                  backgroundColor: speaking ? '#FFC1C1' : '#FFF9EE',
+                  boxShadow: strongShadow,
+                  transition: 'background-color 0.3s',
+                }}
+                className="rounded-full flex items-center justify-center active:scale-90 shrink-0 border-none"
+              >
+                <img src="/oreille.svg" alt="Écouter" className="w-10" />
+              </button>
+            </div>
+
+            {/* Description */}
+            {description && (
+              <p className="text-center text-sm opacity-50 px-4 italic line-clamp-3">
+                "{description}"
+              </p>
+            )}
+
+            {/* Boutons secondaires */}
+            <div className="flex gap-4">
+              {/* Refaire */}
+              <button
+                onClick={() => router.push('/camera')}
+                style={{
+                  width: '70px', height: '70px',
+                  backgroundColor: 'white',
+                  border: '2px solid #1F6680',
+                  boxShadow: strongShadow,
+                }}
+                className="rounded-full flex items-center justify-center active:scale-90 transition-transform"
+              >
+                <img src="/recommencer.svg" alt="Refaire" className="w-8" />
+              </button>
+
+              {/* Télécharger */}
+              <button
+                onClick={telecharger}
+                style={{
+                  width: '70px', height: '70px',
+                  backgroundColor: '#FFF9EE',
+                  border: '2px solid #1F6680',
+                  boxShadow: strongShadow,
+                }}
+                className="rounded-full flex items-center justify-center active:scale-90 transition-transform"
+              >
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3v13M12 16l-4-4M12 16l4-4M3 19h18"
+                    stroke="#1F6680" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+
+              {/* Sauvegarder → historique */}
+              <button
+                onClick={sauvegarderEtQuitter}
+                style={{
+                  width: '70px', height: '70px',
+                  backgroundColor: '#FFF9EE',
+                  border: '2px solid #1F6680',
+                  boxShadow: strongShadow,
+                }}
+                className="rounded-full flex items-center justify-center active:scale-90 transition-transform"
+              >
+                <img src="/historique.svg" alt="Historique" className="w-8" />
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col items-center gap-4 opacity-50">
+            <p className="text-center">Aucune image générée.</p>
+            <button onClick={() => router.push('/camera')} className="underline">
+              Prendre une photo
+            </button>
+          </div>
+        )}
+      </div>
     </main>
   );
 }
