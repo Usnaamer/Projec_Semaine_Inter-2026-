@@ -62,7 +62,7 @@ export default function AidePage() {
       setTimeout(() => router.push('/mes-demandes'), 1000);
     } catch (err) {
       console.error(err);
-      setError("Échec de l'envoi, réessayez");
+      setError("❌");
       setIsSending(false);
     }
   };
