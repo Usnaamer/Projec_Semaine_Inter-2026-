@@ -87,7 +87,7 @@ function TicketCard({
               ? (isSelected ? '#FFAAAA' : '#C0392B')
               : (isSelected ? '#A8FFBC' : '#27AE60'),
           }}>
-            {isPending ? 'EN ATTENTE' : 'RÉPONDU'}
+            {isPending ? '❌' : '✅'}
           </span>
         </div>
 
@@ -283,7 +283,7 @@ export default function MesDemandesPage() {
                 backgroundColor: selectedTicket.status === 'pending' ? '#FFF0F0' : '#F0FFF4',
                 color: selectedTicket.status === 'pending' ? '#C0392B' : '#27AE60',
               }}>
-                {selectedTicket.status === 'pending' ? 'EN ATTENTE' : 'RÉPONDU'}
+                {selectedTicket.status === 'pending' ? '❌' : '✅'}
               </span>
             </div>
 
