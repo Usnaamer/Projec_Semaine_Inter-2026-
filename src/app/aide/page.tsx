@@ -32,7 +32,7 @@ export default function AidePage() {
       setError(null);
     } catch (err) {
       console.error("Erreur micro :", err);
-      setError("Impossible d'accéder au microphone");
+      setError("🔇 🎤 🚫");
     }
   };
 
@@ -69,11 +69,11 @@ export default function AidePage() {
 
   const getLabel = () => {
     if (error) return error;
-    if (isSent) return "Envoyé ✓";
-    if (isSending) return "Envoi en cours…";
-    if (hasRecorded) return "Appuyer pour envoyer";
-    if (isRecording) return "Relâcher pour terminer";
-    return "Maintenir pour enregistrer";
+    if (isSent) return "✅ 📤";
+    if (isSending) return "⏳ 📤 🔄";
+    if (hasRecorded) return "👉 📤 👆";
+    if (isRecording) return "✋ ⬆️ 🛑";
+    return "📱👆⏺️";
   };
 
   return (
@@ -123,7 +123,7 @@ export default function AidePage() {
         style={{ zIndex: 10, position: 'relative' }}
       >
         <p className="text-center text-[#1F6680]/70 text-sm font-medium tracking-wide max-w-[240px]">
-          {isRecording ? "Je vous écoute…" : hasRecorded ? "Votre message est prêt" : "Décrivez votre problème"}
+          {isRecording ? "👂 💬 🧏‍♂️" : hasRecorded ? "✅ 📩 ✉️ 🚀" : "📝 ❓ 🛠️ 💭"}
         </p>
 
         <div className="relative flex items-center justify-center w-full">
